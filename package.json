@@ -1,0 +1,46 @@
+{
+  "name": "interpolate-matter",
+  "version": "0.0.0",
+  "description": "this package is for game character interpolation with matter.js",
+  "main": "src/package/index.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./lib",
+    "build": "npm run clean && tsc && webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0307kwon/interpolate-matter.git"
+  },
+  "keywords": [
+    "matter.js",
+    "interpolation",
+    "game"
+  ],
+  "author": "0307kwon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/0307kwon/interpolate-matter/issues"
+  },
+  "homepage": "https://github.com/0307kwon/interpolate-matter#readme",
+  "peerDependencies": {
+    "matter-js": "^0.18.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "babel-loader": "^9.1.0",
+    "fork-ts-checker-webpack-plugin": "^7.2.13",
+    "matter-js": "^0.18.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "typescript": "^4.9.3",
+    "webpack-cli": "^5.0.0"
+  }
+}
