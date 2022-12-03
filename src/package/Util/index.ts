@@ -6,3 +6,11 @@ export const calculateScaleRatio = (sizeA: Size, sizeB: Size) => {
     scaleY: sizeA.height / sizeB.height,
   };
 };
+
+export const $ById = (id: string) => {
+  const $element = document.getElementById(id);
+
+  if (!$element) throw new Error(`can't find target element by id`);
+
+  return $element;
+};

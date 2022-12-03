@@ -1,9 +1,11 @@
-import GameBody from "@/package/Renderer/GameBody";
+import GameBodyShape from "@/package/Renderer/GameBodyShape";
 import GameMatterContext from "@/package/Renderer/GameMatterContext";
+import withGameLogic from "@/package/Renderer/withGameLogic";
 
 const Renderer = {
   GameMatterContext,
-  GameBody,
+  GameBodyShape,
+  withGameLogic,
 };
 
 export default Renderer;

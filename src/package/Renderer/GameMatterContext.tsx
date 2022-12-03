@@ -1,29 +1,30 @@
-import GameFactory from "@/package/Model/GameFactory";
 import GameMatterStore from "@/package/Model/GameMatterStore";
-import GamePainter, { GamePainterOptions } from "@/package/Model/GamePainter";
+import GamePainter, { GamePainterConfig } from "@/package/Model/GamePainter";
 import { Engine } from "matter-js";
-import React, { ReactNode, useContext, useMemo, useRef, useState } from "react";
+import React, {
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import classes from "./GameMatterContext.module.less";
 
 interface ContextValue {
   gamePainter: GamePainter;
-  gameFactory: GameFactory;
   gameMatterStore: GameMatterStore;
 }
 
 const Context = React.createContext<ContextValue | null>(null);
 
-export interface GameMatterContextProps<F extends GameFactory> {
+export interface GameMatterContextProps {
   children: ReactNode;
-  gameFactory: F;
-  options: GamePainterOptions;
+  options: GamePainterConfig;
 }
 
-const GameMatterContext = <F extends GameFactory>({
-  children,
-  gameFactory,
-  options,
-}: GameMatterContextProps<F>) => {
+const GameMatterContext = ({ children, options }: GameMatterContextProps) => {
+  const isLoading = useRef(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [_gameMatterStore] = useState(
     new GameMatterStore({
@@ -31,15 +32,23 @@ const GameMatterContext = <F extends GameFactory>({
     })
   );
   const [_gamePainter] = useState(new GamePainter(_gameMatterStore, options));
-  const [_gameFactory] = useState(gameFactory);
   const contextValue = useMemo(
     () => ({
       gameMatterStore: _gameMatterStore,
       gamePainter: _gamePainter,
-      gameFactory: _gameFactory,
     }),
     []
   );
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+    if (!isLoading.current) return;
+
+    // 모든 정보가 갖춰지면 한번만 실행합니다.
+    isLoading.current = false;
+
+    _gamePainter.initCanvas(canvasRef.current);
+  }, [canvasRef, isLoading]);
 
   return (
     <Context.Provider value={contextValue}>
@@ -58,7 +67,7 @@ export const useGameMatterContext = () => {
     throw new Error("can't use this hook out of GameControllerContext");
   }
 
-  return value;
+  return value as ContextValue;
 };
 
 export default GameMatterContext;

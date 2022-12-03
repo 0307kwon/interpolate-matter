@@ -1,5 +1,7 @@
+import { useGameMatterContext } from "@/package/Renderer/GameMatterContext";
+import MatterImg from "@/package/Renderer/MatterImg";
 import { GameBody, GameBodyOptions } from "@/package/types";
-import React, { ReactNode, useContext, useState } from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 
 interface ContextValue<T extends GameBodyOptions = GameBodyOptions> {
   gameBody: GameBody<T>;
@@ -34,16 +36,28 @@ export const useGameBody = <T extends GameBodyOptions>() => {
   return value as ContextValue<T>;
 };
 
-export interface GameBodyProps<T extends GameBodyOptions> {
+export interface GameBodyShapeProps<T extends GameBodyOptions> {
   gameBody: GameBody<T>;
+  bodyImgSrc: string;
   children?: ReactNode;
 }
 
-const GameBody = <T extends GameBodyOptions>({
+const GameBodyShape = <T extends GameBodyOptions>({
   gameBody,
+  bodyImgSrc,
   children,
-}: GameBodyProps<T>) => {
-  return <GameBodyContext gameBody={gameBody}>{children}</GameBodyContext>;
+}: GameBodyShapeProps<T>) => {
+  const { gamePainter } = useGameMatterContext();
+
+  useEffect(() => {
+    gamePainter.spawnGameBody(gameBody);
+  }, []);
+
+  return (
+    <GameBodyContext gameBody={gameBody}>
+      <MatterImg imgSrc={bodyImgSrc}>{children}</MatterImg>
+    </GameBodyContext>
+  );
 };
 
-export default GameBody;
+export default GameBodyShape;

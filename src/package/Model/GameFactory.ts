@@ -15,7 +15,11 @@ type CreateGameBodyOptions<T extends GameBodyOptions> =
  * this class is responsible for creating gameBody
  */
 export default class GameFactory {
-  createGameBody<T extends GameBodyOptions = GameBodyOptions>(
+  protected constructor() {
+    throw new Error("please use class by static");
+  }
+
+  static createGameBody<T extends GameBodyOptions = GameBodyOptions>(
     createOption: CreateGameBodyOptions<T>
   ): GameBody<T> {
     const x = createOption.x;

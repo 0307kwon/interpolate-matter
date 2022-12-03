@@ -11,6 +11,14 @@ module.exports = merge(common, {
     publicPath: "/",
     clean: true,
   },
+  module: {
+    rules: [
+      {
+        test: /\.(jpg|png|jpeg|gif)/,
+        type: "asset/resource",
+      },
+    ],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(

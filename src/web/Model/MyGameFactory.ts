@@ -10,14 +10,14 @@ interface CharacterBodyOptions extends GameBodyOptions {
 }
 
 export default class MyGameFactory extends GameFactory {
-  private createBasicCharacterBody({
+  static createBasicCharacterBody({
     matterType,
     gameId,
   }: {
     matterType: MATTER_TYPE;
     gameId: string;
   }) {
-    const gameBody = this.createGameBody<CharacterBodyOptions>({
+    const gameBody = MyGameFactory.createGameBody<CharacterBodyOptions>({
       width: INITIAL_CHARACTER_SIZE.width,
       height: INITIAL_CHARACTER_SIZE.height,
       x: RESOLUTION.width / 2,
@@ -40,7 +40,7 @@ export default class MyGameFactory extends GameFactory {
   }
 
   createMyCharacterBody(gameId: string) {
-    const character = this.createBasicCharacterBody({
+    const character = MyGameFactory.createBasicCharacterBody({
       matterType: MATTER_TYPE.myCharacter,
       gameId,
     });

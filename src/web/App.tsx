@@ -1,15 +1,14 @@
 import GameMatterContext from "@/package/Renderer/GameMatterContext";
-import MyGameFactory from "@/web/Model/GameFactory";
+import CharacterBody from "@/web/component/CharacterBody";
+import MyGameFactory from "@/web/Model/MyGameFactory";
+import { MATTER_TYPE } from "@/web/type";
 import classes from "./App.module.less";
-
-const gameFactory = new MyGameFactory();
 
 const App = () => {
   return (
     <div className={classes.root}>
       <div className={classes.game}>
         <GameMatterContext
-          gameFactory={gameFactory}
           options={{
             canvasElementId: "canvas",
             fps: 60,
@@ -19,7 +18,12 @@ const App = () => {
             },
           }}
         >
-          <div></div>
+          <CharacterBody
+            gameBody={MyGameFactory.createBasicCharacterBody({
+              matterType: MATTER_TYPE.myCharacter,
+              gameId: "1",
+            })}
+          />
         </GameMatterContext>
       </div>
     </div>

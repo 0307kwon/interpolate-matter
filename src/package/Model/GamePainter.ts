@@ -1,9 +1,10 @@
 import GameMatterStore from "@/package/Model/GameMatterStore";
 import { CleanUpEventFn, GameBody, GameBodyOptions } from "@/package/types";
 import { calculateScaleRatio } from "@/package/Util";
+import { cloneDeep } from "lodash-es";
 import { Body, Composite, Render, Runner } from "matter-js";
 
-export interface GamePainterOptions {
+export interface GamePainterConfig {
   canvasElementId: string;
   fps: number;
   resolution: { width: number; height: number };
@@ -15,32 +16,25 @@ export default class GamePainter {
   private _matterStore: GameMatterStore;
   private _isRemoved: boolean;
   private _isStopped: boolean;
-  private _options: GamePainterOptions;
+  private _config: GamePainterConfig;
   private _interval: number;
   private _canvasElementId: string;
 
-  constructor(gameMatterStore: GameMatterStore, options: GamePainterOptions) {
+  constructor(gameMatterStore: GameMatterStore, config: GamePainterConfig) {
     this._matterStore = gameMatterStore;
     this._isRemoved = false;
     this._isStopped = false;
-    this._options = options;
-    this._interval = 1000 / options.fps;
-    this._canvasElementId = options.canvasElementId;
+    this._config = config;
+    this._interval = 1000 / config.fps;
+    this._canvasElementId = config.canvasElementId;
   }
 
-  getCanvasElement(): HTMLCanvasElement {
-    const target = document.getElementById(this._canvasElementId) as
-      | HTMLCanvasElement
-      | undefined;
-    if (!target) {
-      throw new Error("there is no canvas element");
-    }
-
-    return target;
+  getConfig() {
+    return cloneDeep(this._config);
   }
 
   initCanvas(canvasElement: HTMLCanvasElement) {
-    const { width, height } = this._options.resolution;
+    const { width, height } = this._config.resolution;
     const runner = Runner.create();
     const render = Render.create({
       canvas: canvasElement,
