@@ -7,11 +7,11 @@
     "strict": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "**/__tests__/*"],
-  "paths": {
-    "@/*": ["src/*"]
-  }
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "**/__tests__/*"]
 }
