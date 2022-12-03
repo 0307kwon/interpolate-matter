@@ -1,7 +1,7 @@
-import AbstractGameFactory from "@/package/Model/AbstractGameFactory";
+import GameFactory from "@/package/Model/GameFactory";
 
 const Model = {
-  AbstractGameFactory,
+  GameFactory,
 };
 
 export default Model;

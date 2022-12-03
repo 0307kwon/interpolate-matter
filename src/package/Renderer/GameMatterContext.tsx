@@ -1,4 +1,4 @@
-import AbstractGameFactory from "@/package/Model/AbstractGameFactory";
+import GameFactory from "@/package/Model/GameFactory";
 import GameMatterStore from "@/package/Model/GameMatterStore";
 import GamePainter, { GamePainterOptions } from "@/package/Model/GamePainter";
 import { Engine } from "matter-js";
@@ -7,24 +7,24 @@ import classes from "./GameMatterContext.module.less";
 
 interface ContextValue {
   gamePainter: GamePainter;
-  gameFactory: AbstractGameFactory;
+  gameFactory: GameFactory;
   gameMatterStore: GameMatterStore;
 }
 
 const createContext = (contextValue: ContextValue) =>
   React.createContext(contextValue);
 
-export interface GameMatterContextProps {
+export interface GameMatterContextProps<F extends GameFactory> {
   children: ReactNode;
-  gameFactory: AbstractGameFactory;
+  gameFactory: F;
   options: GamePainterOptions;
 }
 
-const GameMatterContext = ({
+const GameMatterContext = <F extends GameFactory>({
   children,
   gameFactory,
   options,
-}: GameMatterContextProps) => {
+}: GameMatterContextProps<F>) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [_gameMatterStore] = useState(
     new GameMatterStore({

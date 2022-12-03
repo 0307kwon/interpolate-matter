@@ -7,13 +7,17 @@ type CreateGameBodyOptions<T extends GameBodyOptions> =
     height: number;
     x: number;
     y: number;
-    customOption: T;
+    customOption: Omit<T, "initialMatterInfo" | "size">;
   };
 
-export default abstract class AbstractGameFactory {
-  static createGameBody<T extends GameBodyOptions>(
+/**
+ * create gameBody with custom options
+ * this class is responsible for creating gameBody
+ */
+export default class GameFactory {
+  createGameBody<T extends GameBodyOptions = GameBodyOptions>(
     createOption: CreateGameBodyOptions<T>
-  ): GameBody {
+  ): GameBody<T> {
     const x = createOption.x;
     const y = createOption.y;
     const width = createOption.width;
@@ -31,13 +35,23 @@ export default abstract class AbstractGameFactory {
     Body.set(body, {
       options: {
         ...createOption.customOption,
+        size: {
+          width,
+          height,
+        },
+        initialMatterInfo: {
+          position: {
+            x,
+            y,
+          },
+          size: {
+            width,
+            height,
+          },
+        },
       },
     });
 
     return body as GameBody<T>;
   }
-
-  protected abstract createMyCharacterBody<
-    T extends GameBodyOptions
-  >(): GameBody<T>;
 }
