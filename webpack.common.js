@@ -1,17 +1,6 @@
 const path = require("path");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = {
-  mode: "production",
-  entry: path.resolve(__dirname, "src", "package", "index.tsx"),
-  output: {
-    filename: "index.js",
-    path: path.resolve(__dirname, "lib"),
-    library: "@0307kwon/interpolate-matter",
-    libraryTarget: "umd",
-    umdNamedDefine: true,
-  },
-  externals: ["react", "react-dom", "matter-js", "lodash-es"],
   module: {
     rules: [
       {
@@ -82,6 +71,5 @@ module.exports = {
       "@": path.resolve(__dirname, "src"),
     },
   },
-  plugins: [new ForkTsCheckerWebpackPlugin()],
   cache: false,
 };
