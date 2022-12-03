@@ -2,7 +2,7 @@ import GameFactory from "@/package/Model/GameFactory";
 import GameMatterStore from "@/package/Model/GameMatterStore";
 import GamePainter, { GamePainterOptions } from "@/package/Model/GamePainter";
 import { Engine } from "matter-js";
-import React, { ReactNode, useMemo, useRef, useState } from "react";
+import React, { ReactNode, useContext, useMemo, useRef, useState } from "react";
 import classes from "./GameMatterContext.module.less";
 
 interface ContextValue {
@@ -11,8 +11,7 @@ interface ContextValue {
   gameMatterStore: GameMatterStore;
 }
 
-const createContext = (contextValue: ContextValue) =>
-  React.createContext(contextValue);
+const Context = React.createContext<ContextValue | null>(null);
 
 export interface GameMatterContextProps<F extends GameFactory> {
   children: ReactNode;
@@ -41,8 +40,6 @@ const GameMatterContext = <F extends GameFactory>({
     }),
     []
   );
-  const ContextRef = useRef(createContext(contextValue));
-  const Context = ContextRef.current;
 
   return (
     <Context.Provider value={contextValue}>
@@ -52,6 +49,16 @@ const GameMatterContext = <F extends GameFactory>({
       </div>
     </Context.Provider>
   );
+};
+
+export const useGameMatterContext = () => {
+  const value = useContext(Context);
+
+  if (!value) {
+    throw new Error("can't use this hook out of GameControllerContext");
+  }
+
+  return value;
 };
 
 export default GameMatterContext;
