@@ -1,13 +1,6 @@
-import { GameBodyOptions } from "@/package";
 import GameFactory from "@/package/Model/GameFactory";
 import { INITIAL_CHARACTER_SIZE, RESOLUTION } from "@/web/config";
-import { MATTER_TYPE } from "@/web/type";
-
-interface CharacterBodyOptions extends GameBodyOptions {
-  gameId: string;
-  speed: number;
-  jumpVelocity: number;
-}
+import { CharacterBodyOptions, MATTER_TYPE } from "@/web/type";
 
 export default class MyGameFactory extends GameFactory {
   static createBasicCharacterBody({

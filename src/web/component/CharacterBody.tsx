@@ -3,10 +3,11 @@ import GameBodyShape from "@/package/Renderer/GameBodyShape";
 import withGameLogic from "@/package/Renderer/withGameLogic";
 import NameTag from "@/web/component/NameTag";
 import characterImg from "@/web/public/img/character.gif";
+import { CharacterBodyOptions } from "@/web/type";
 import { useEffect, useState } from "react";
 
 interface Props {
-  gameBody: GameBody;
+  gameBody: GameBody<CharacterBodyOptions>;
 }
 
 const CharacterBodyShape = ({ gameBody }: Props) => {

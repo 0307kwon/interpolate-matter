@@ -1,18 +1,22 @@
-import { useGameBody } from "@/package/Renderer/GameBodyShape";
 import { useGameMatterContext } from "@/package/Renderer/GameMatterContext";
+import { GameBody, GameBodyOptions } from "@/package/types";
 import { $ById } from "@/package/Util";
 import { Events } from "matter-js";
 import { ReactNode, useEffect, useRef } from "react";
 import classes from "./MatterImg.module.less";
 
-interface Props {
+interface Props<T extends GameBodyOptions> {
+  gameBody: GameBody<T>;
   imgSrc: string;
   children?: ReactNode;
 }
 
-const MatterImg = ({ imgSrc, children }: Props) => {
+const MatterImg = <T extends GameBodyOptions>({
+  gameBody,
+  imgSrc,
+  children,
+}: Props<T>) => {
   const { gameMatterStore, gamePainter } = useGameMatterContext();
-  const { gameBody } = useGameBody();
   const imgRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
 
