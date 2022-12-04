@@ -1,5 +1,6 @@
 import GameMatterStore from "@/package/Model/GameMatterStore";
 import GamePainter, { GamePainterConfig } from "@/package/Model/GamePainter";
+import { RESOLUTION } from "@/web/config";
 import { Engine } from "matter-js";
 import React, {
   ReactNode,
@@ -52,7 +53,14 @@ const GameMatterContext = ({ children, options }: GameMatterContextProps) => {
 
   return (
     <Context.Provider value={contextValue}>
-      <div className={classes.root}>
+      <div
+        className={classes.root}
+        style={{
+          maxWidth: RESOLUTION.width,
+          maxHeight: RESOLUTION.height,
+          paddingTop: `${(RESOLUTION.height / RESOLUTION.width) * 100}%`,
+        }}
+      >
         <canvas ref={canvasRef} id={options.canvasElementId}></canvas>
         {children}
       </div>
