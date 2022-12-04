@@ -18,6 +18,10 @@ const GameBodyShape = <T extends GameBodyOptions>({
 
   useEffect(() => {
     gamePainter.spawnGameBody(gameBody);
+
+    return () => {
+      gamePainter.unspawnGameBody(gameBody);
+    };
   }, []);
 
   return (

@@ -12,7 +12,8 @@ type CreateGameBodyOptions<T extends GameBodyOptions> =
   };
 
 /**
- * create gameBody with custom options
+ * create gameBody with custom options.
+ *
  * this class is responsible for creating gameBody
  */
 export default class GameFactory {
