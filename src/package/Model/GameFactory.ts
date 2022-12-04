@@ -1,4 +1,5 @@
 import { GameBody, GameBodyOptions } from "@/package/types";
+import { radian } from "@/package/Util";
 import Matter, { Bodies, Body } from "matter-js";
 
 type CreateGameBodyOptions<T extends GameBodyOptions> =
@@ -27,11 +28,12 @@ export default class GameFactory {
     const width = createOption.width;
     const height = createOption.height;
 
-    const option = {
+    const option: CreateGameBodyOptions<T> = {
       render: {
         fillStyle: "rgba(0,0,0,0)",
       },
       ...createOption,
+      angle: radian(createOption.angle ?? 0),
     };
 
     const body = Bodies.rectangle(x, y, width, height, option);

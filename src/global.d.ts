@@ -4,8 +4,7 @@ declare module "*.module.less" {
   export default contents;
 }
 
-declare module "*.gif" {
-  const url: string;
-
-  export default url;
-}
+declare module "*.gif";
+declare module "*.png";
+declare module "*.jpg";
+declare module "*.jpeg";

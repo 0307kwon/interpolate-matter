@@ -39,12 +39,31 @@ export default class MyGameFactory extends GameFactory {
     return gameBody;
   }
 
-  createMyCharacterBody(gameId: string) {
+  static createMyCharacterBody(gameId: string) {
     const character = MyGameFactory.createBasicCharacterBody({
       matterType: MATTER_TYPE.myCharacter,
       gameId,
     });
 
     return character;
+  }
+
+  static createWall(param: {
+    width: number;
+    thickness: number;
+    angle?: number;
+    x: number;
+    y: number;
+  }) {
+    const wall = MyGameFactory.createGameBody({
+      ...param,
+      height: param.thickness,
+      isStatic: true,
+      customOption: {
+        matterType: MATTER_TYPE.wall,
+      },
+    });
+
+    return wall;
   }
 }

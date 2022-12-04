@@ -14,3 +14,11 @@ export const $ById = (id: string) => {
 
   return $element;
 };
+
+export const radian = (degree: number) => {
+  return (degree * Math.PI) / 180.0;
+};
+
+export const degree = (radian: number) => {
+  return (radian * 180) / Math.PI;
+};

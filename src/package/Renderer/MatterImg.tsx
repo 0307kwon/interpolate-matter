@@ -46,11 +46,11 @@ const MatterImg = ({ imgSrc, children }: Props) => {
       // TODO: translate로 바꿔야 함
       $rootDom.style.left =
         gameBody.position.x * originalToRealWidthRatio -
-        calculatedMatterSize.width / 2.0 +
+        calculatedMatterSize.width / 2 +
         "px";
       $rootDom.style.top =
         gameBody.position.y * originalToRealWidthRatio -
-        calculatedMatterSize.height / 2.0 +
+        calculatedMatterSize.height / 2 +
         "px";
       $rootDom.style.width = calculatedMatterSize.width + "px";
       $rootDom.style.height = calculatedMatterSize.height + "px";
