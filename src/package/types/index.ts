@@ -29,3 +29,5 @@ export interface GameBody<T extends GameBodyOptions = GameBodyOptions>
 }
 
 export type CleanUpEventFn = () => void;
+
+export type GameEvent = (e: Matter.IEventTimestamped<Matter.Engine>) => void;

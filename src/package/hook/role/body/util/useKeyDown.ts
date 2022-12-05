@@ -1,6 +1,5 @@
-import { useGameMatterContext } from "@/package/Renderer/GameMatterContext";
+import useGameEvent from "@/package/hook/role/body/util/useGameEvent";
 import { get } from "lodash-es";
-import { Events } from "matter-js";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 type KeyCode = string;
@@ -9,8 +8,8 @@ type KeyHandlers = Record<KeyCode, () => void>;
 
 const useKeyDown = () => {
   const keysDownRef = useRef<Set<string>>(new Set());
-  const { gameMatterStore } = useGameMatterContext();
   const [keyHandler, setKeyHandler] = useState<KeyHandlers>({});
+  const { addGameEvents } = useGameEvent();
 
   const deleteKeyDown = useCallback((code: string) => {
     keysDownRef.current.delete(code);
@@ -64,20 +63,14 @@ const useKeyDown = () => {
   }, []);
 
   useEffect(() => {
-    const engine = gameMatterStore.matterCore.engine;
-
     const keyDownEvent = () => {
       Array.from(keysDownRef.current).forEach((code) => {
         get(keyHandler, code)?.();
       });
     };
 
-    Events.on(engine, "beforeUpdate", keyDownEvent);
-
-    return () => {
-      Events.off(engine, "beforeUpdate", keyDownEvent);
-    };
-  }, [gameMatterStore.matterCore.engine, keyHandler]);
+    return addGameEvents(keyDownEvent);
+  }, [addGameEvents, keyHandler]);
 
   return {
     setContinualKeyInput,
