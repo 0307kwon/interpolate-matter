@@ -25,6 +25,26 @@ const App = () => {
               y: RESOLUTION.height - 20,
             })}
           />
+          <WallBody
+            gameBody={MyGameFactory.createWall({
+              width: RESOLUTION.height,
+              thickness: 20,
+              x: 10,
+              y: RESOLUTION.height / 2,
+              angle: 90,
+            })}
+            transparent={true}
+          />
+          <WallBody
+            gameBody={MyGameFactory.createWall({
+              width: RESOLUTION.height,
+              thickness: 20,
+              x: RESOLUTION.width - 10,
+              y: RESOLUTION.height / 2,
+              angle: 90,
+            })}
+            transparent={true}
+          />
         </GameMatterContext>
       </div>
     </div>

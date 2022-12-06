@@ -4,10 +4,16 @@ import wallImg from "@/web/public/img/wall.png";
 
 interface Props {
   gameBody: GameBody;
+  transparent?: boolean;
 }
 
-const WallBody = ({ gameBody }: Props) => {
-  return <GameBodyShape gameBody={gameBody} bodyImgSrc={wallImg} />;
+const WallBody = ({ gameBody, transparent }: Props) => {
+  return (
+    <GameBodyShape
+      gameBody={gameBody}
+      bodyImgSrc={transparent ? undefined : wallImg}
+    />
+  );
 };
 
 export default WallBody;

@@ -7,7 +7,7 @@ import classes from "./MatterImg.module.less";
 
 interface Props<T extends GameBodyOptions> {
   gameBody: GameBody<T>;
-  imgSrc: string;
+  imgSrc?: string;
   children?: ReactNode;
 }
 
@@ -71,7 +71,7 @@ const MatterImg = <T extends GameBodyOptions>({
   return (
     <div className={classes.root} ref={rootRef}>
       <div className={classes.MatterImg} ref={imgRef}>
-        <img src={imgSrc} />
+        {imgSrc && <img src={imgSrc} />}
       </div>
       {children}
     </div>
