@@ -7,6 +7,9 @@ export interface Size {
 
 export interface GameBodyOptions {
   matterType: string;
+  subscriber: {
+    callbackQueue: GameEvent[];
+  };
   size: {
     width: number;
     height: number;

@@ -8,7 +8,7 @@ type CreateGameBodyOptions<T extends GameBodyOptions> =
     height: number;
     x: number;
     y: number;
-    customOption: Omit<T, "initialMatterInfo" | "size">;
+    customOption: Omit<T, "initialMatterInfo" | "size" | "subscriber">;
   };
 
 /**
@@ -42,6 +42,9 @@ export default class GameFactory {
     Body.set(body, {
       options: {
         ...createOption.customOption,
+        subscriber: {
+          callbackQueue: [],
+        },
         size: {
           width,
           height,
@@ -57,7 +60,7 @@ export default class GameFactory {
           },
         },
       },
-    });
+    } as { options: GameBodyOptions });
 
     return body as GameBody<T>;
   }

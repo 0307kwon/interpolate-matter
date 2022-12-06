@@ -1,4 +1,5 @@
-import { GameBody } from "@/package";
+import { GameBody, GameEvent } from "@/package";
+import useGameEvent from "@/package/hook/role/body/util/useGameEvent";
 import GameBodyShape from "@/package/Renderer/GameBodyShape";
 import withGameLogic from "@/package/Renderer/withGameLogic";
 import NameTag from "@/web/component/NameTag";
@@ -24,11 +25,19 @@ const CharacterBodyShape = ({ gameBody }: Props) => {
   );
 };
 
-const CharacterBody = withGameLogic(CharacterBodyShape, () => {
+const CharacterBody = withGameLogic(CharacterBodyShape, ({ gameBody }) => {
   const [test2] = useState("test2");
+  const { publishGameEventOnce } = useGameEvent();
 
   useEffect(() => {
-    console.log(test2);
+    const callback: GameEvent = (e) => {
+      console.log(e);
+    };
+
+    publishGameEventOnce(gameBody, callback);
+    publishGameEventOnce(gameBody, callback);
+    publishGameEventOnce(gameBody, callback);
+    publishGameEventOnce(gameBody, callback);
   }, []);
 });
 

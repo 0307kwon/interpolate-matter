@@ -1,5 +1,5 @@
 import { useGameMatterContext } from "@/package/Renderer/GameMatterContext";
-import { GameEvent } from "@/package/types";
+import { GameBody, GameEvent } from "@/package/types";
 import { Events } from "matter-js";
 import { useCallback } from "react";
 
@@ -43,8 +43,40 @@ const useGameEvent = () => {
     []
   );
 
+  /**
+   * publish game event which executes once.
+   *
+   * if you call several times, each event executes sequently per frame
+   */
+  const publishGameEventOnce = useCallback(
+    (gameBody: GameBody, event: GameEvent) => {
+      const wrappedEvent: GameEvent = (e) => {
+        if (gameBody.options.subscriber.callbackQueue.length === 1) {
+          Events.off(engine, "afterUpdate", wrappedEvent);
+        }
+
+        const curEvent = gameBody.options.subscriber.callbackQueue.pop();
+
+        if (!curEvent) {
+          Events.off(engine, "afterUpdate", wrappedEvent);
+          return;
+        }
+
+        curEvent(e);
+      };
+
+      if (gameBody.options.subscriber.callbackQueue.length === 0) {
+        Events.on(engine, "afterUpdate", wrappedEvent);
+      }
+
+      gameBody.options.subscriber.callbackQueue.push(event);
+    },
+    []
+  );
+
   return {
     addGameEvents,
+    publishGameEventOnce,
   };
 };
 
