@@ -28,7 +28,7 @@ const useKeyDown = () => {
 
       Object.keys(value).forEach((key) => {
         newKeyHandlers[key] = () => {
-          keyHandler[key]();
+          value[key]();
 
           deleteKeyDown(key);
         };
@@ -39,7 +39,7 @@ const useKeyDown = () => {
         ...newKeyHandlers,
       }));
     },
-    [deleteKeyDown, keyHandler]
+    [deleteKeyDown]
   );
 
   useEffect(() => {

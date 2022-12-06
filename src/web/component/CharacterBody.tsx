@@ -1,11 +1,12 @@
-import { GameBody, GameEvent } from "@/package";
-import useGameEvent from "@/package/hook/role/body/util/useGameEvent";
+import { GameBody } from "@/package";
+import useKeyDown from "@/package/hook/role/body/util/useKeyDown";
+import useCharacterInterface from "@/package/hook/role/useCharacterInterface";
 import GameBodyShape from "@/package/Renderer/GameBodyShape";
 import withGameLogic from "@/package/Renderer/withGameLogic";
 import NameTag from "@/web/component/NameTag";
 import characterImg from "@/web/public/img/character.gif";
 import { CharacterBodyOptions } from "@/web/type";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface Props {
   gameBody: GameBody<CharacterBodyOptions>;
@@ -26,18 +27,18 @@ const CharacterBodyShape = ({ gameBody }: Props) => {
 };
 
 const CharacterBody = withGameLogic(CharacterBodyShape, ({ gameBody }) => {
-  const [test2] = useState("test2");
-  const { publishGameEventOnce } = useGameEvent();
+  const { moveLeft, moveRight, jump } = useCharacterInterface(gameBody);
+  const { setContinualKeyInput, setInstantKeyInput } = useKeyDown();
 
   useEffect(() => {
-    const callback: GameEvent = (e) => {
-      console.log(e);
-    };
+    setContinualKeyInput({
+      KeyA: moveLeft,
+      KeyD: moveRight,
+    });
 
-    publishGameEventOnce(gameBody, callback);
-    publishGameEventOnce(gameBody, callback);
-    publishGameEventOnce(gameBody, callback);
-    publishGameEventOnce(gameBody, callback);
+    setInstantKeyInput({
+      KeyW: jump,
+    });
   }, []);
 });
 
