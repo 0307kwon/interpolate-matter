@@ -6,7 +6,7 @@ import { useCallback } from "react";
 const useGameBodyEvent = (gameBody: GameBody) => {
   const { gamePainter } = useGameMatterContext();
 
-  const outOfViewEvent = useCallback(
+  const getOutOfViewEvent = useCallback(
     (callbackWhenOutOfView: () => void): GameEvent => {
       const whenOutOfView = () => {
         const isOutOfView =
@@ -23,7 +23,7 @@ const useGameBodyEvent = (gameBody: GameBody) => {
     []
   );
 
-  const collisionEvent = useCallback(
+  const getCollisionEvent = useCallback(
     (
       gameBodies: GameBody[] | (() => GameBody[]),
       whenCollide: (collisions: Collision[]) => void
@@ -45,8 +45,8 @@ const useGameBodyEvent = (gameBody: GameBody) => {
   );
 
   return {
-    outOfViewEvent,
-    collisionEvent,
+    getOutOfViewEvent,
+    getCollisionEvent,
   };
 };
 
