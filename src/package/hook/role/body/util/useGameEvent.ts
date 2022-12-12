@@ -1,15 +1,15 @@
-import { useGameMatterContext } from "@/package/Renderer/GameMatterContext";
-import { GameBody, GameEvent } from "@/package/types";
-import { Events } from "matter-js";
-import { useCallback } from "react";
+import { useGameMatterContext } from '@/package/Renderer/GameMatterContext'
+import { GameBody, GameEvent } from '@/package/types'
+import { Events } from 'matter-js'
+import { useCallback } from 'react'
 
-type EventName = "beforeUpdate" | "afterUpdate";
+type EventName = 'beforeUpdate' | 'afterUpdate'
 
-type CleanUpEventFn = () => void;
+type CleanUpEventFn = () => void
 
 const useGameEvent = () => {
-  const { gameMatterStore } = useGameMatterContext();
-  const engine = gameMatterStore.matterCore.engine;
+  const { gameStore } = useGameMatterContext()
+  const engine = gameStore.engine
 
   /**
    * Add events and return cleanUp function for useEffect.
@@ -21,27 +21,27 @@ const useGameEvent = () => {
       ...events: (GameEvent | { name: EventName; event: GameEvent })[]
     ): CleanUpEventFn => {
       events.forEach((event) => {
-        if (typeof event === "function") {
-          Events.on(engine, "beforeUpdate", event);
-          return;
+        if (typeof event === 'function') {
+          Events.on(engine, 'beforeUpdate', event)
+          return
         }
 
-        Events.on(engine, event.name, event.event);
-      });
+        Events.on(engine, event.name, event.event)
+      })
 
       return () => {
         events.forEach((event) => {
-          if (typeof event === "function") {
-            Events.off(engine, "beforeUpdate", event);
-            return;
+          if (typeof event === 'function') {
+            Events.off(engine, 'beforeUpdate', event)
+            return
           }
 
-          Events.off(engine, event.name, event.event);
-        });
-      };
+          Events.off(engine, event.name, event.event)
+        })
+      }
     },
     []
-  );
+  )
 
   /**
    * publish game event which executes once.
@@ -52,32 +52,32 @@ const useGameEvent = () => {
     (gameBody: GameBody, event: GameEvent) => {
       const wrappedEvent: GameEvent = (e) => {
         if (gameBody.options.subscriber.callbackQueue.length === 1) {
-          Events.off(engine, "afterUpdate", wrappedEvent);
+          Events.off(engine, 'afterUpdate', wrappedEvent)
         }
 
-        const curEvent = gameBody.options.subscriber.callbackQueue.pop();
+        const curEvent = gameBody.options.subscriber.callbackQueue.pop()
 
         if (!curEvent) {
-          Events.off(engine, "afterUpdate", wrappedEvent);
-          return;
+          Events.off(engine, 'afterUpdate', wrappedEvent)
+          return
         }
 
-        curEvent(e);
-      };
-
-      if (gameBody.options.subscriber.callbackQueue.length === 0) {
-        Events.on(engine, "afterUpdate", wrappedEvent);
+        curEvent(e)
       }
 
-      gameBody.options.subscriber.callbackQueue.push(event);
+      if (gameBody.options.subscriber.callbackQueue.length === 0) {
+        Events.on(engine, 'afterUpdate', wrappedEvent)
+      }
+
+      gameBody.options.subscriber.callbackQueue.push(event)
     },
     []
-  );
+  )
 
   return {
     addGameEvents,
-    publishGameEventOnce,
-  };
-};
+    publishGameEventOnce
+  }
+}
 
-export default useGameEvent;
+export default useGameEvent
