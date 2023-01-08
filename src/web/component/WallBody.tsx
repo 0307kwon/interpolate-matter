@@ -1,10 +1,10 @@
-import { GameBody } from "@/package";
-import GameBodyShape from "@/package/Renderer/GameBodyShape";
-import wallImg from "@/web/public/img/wall.png";
+import { GameBody } from '@/package'
+import GameBodyShape from '@/package/Renderer/GameBodyShape'
+import wallImg from '@/web/public/img/wall.png'
 
 interface Props {
-  gameBody: GameBody;
-  transparent?: boolean;
+  gameBody: GameBody
+  transparent?: boolean
 }
 
 const WallBody = ({ gameBody, transparent }: Props) => {
@@ -13,7 +13,7 @@ const WallBody = ({ gameBody, transparent }: Props) => {
       gameBody={gameBody}
       bodyImgSrc={transparent ? undefined : wallImg}
     />
-  );
-};
+  )
+}
 
-export default WallBody;
+export default WallBody

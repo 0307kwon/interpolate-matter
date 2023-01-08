@@ -1,12 +1,23 @@
 import GameStore from '@/package/Model/GameStore'
 import GameMatterContext from '@/package/Renderer/GameMatterContext'
 import CharacterBody from '@/web/component/CharacterBody'
-import OppositeCharacterBody from '@/web/component/OppositeCharacterBody'
+import { OppositeCharacterBody } from '@/web/component/OppositeCharacterBody'
 import WallBody from '@/web/component/WallBody'
 import { RESOLUTION } from '@/web/config'
+import Communicator from '@/web/Model/Communicator'
 import MyGameFactory from '@/web/Model/MyGameFactory'
 import { Engine } from 'matter-js'
 import classes from './App.module.less'
+
+interface SyncUpMsg {
+  position: {
+    x: number
+    y: number
+  }
+  angle?: number
+}
+
+export const communicator = Communicator<SyncUpMsg>()
 
 const gameMatterStore1 = new GameStore({
   engine: Engine.create()

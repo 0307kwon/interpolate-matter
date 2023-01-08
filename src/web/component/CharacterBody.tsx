@@ -1,8 +1,10 @@
 import { GameBody } from '@/package'
+import useGameEvent from '@/package/hook/role/body/util/useGameEvent'
 import useKeyDown from '@/package/hook/role/body/util/useKeyDown'
 import useCharacterInterface from '@/package/hook/role/useCharacterInterface'
 import GameBodyShape from '@/package/Renderer/GameBodyShape'
 import withGameLogic from '@/package/Renderer/withGameLogic'
+import { communicator } from '@/web/App'
 import NameTag from '@/web/component/NameTag'
 import characterImg from '@/web/public/img/character.gif'
 import { CharacterBodyOptions } from '@/web/type'
@@ -29,6 +31,7 @@ export const CharacterBodyShape = ({ gameBody }: BodyShapeProps) => {
 const CharacterBody = withGameLogic(CharacterBodyShape, ({ gameBody }) => {
   const { moveLeft, moveRight, jump } = useCharacterInterface(gameBody)
   const { setContinualKeyInput, setInstantKeyInput } = useKeyDown()
+  const { addGameEvents } = useGameEvent()
 
   useEffect(() => {
     setContinualKeyInput({
@@ -39,6 +42,15 @@ const CharacterBody = withGameLogic(CharacterBodyShape, ({ gameBody }) => {
     setInstantKeyInput({
       KeyW: jump
     })
+
+    const sendGameBodyPosition = () => {
+      communicator.send({
+        position: gameBody.position,
+        angle: gameBody.angle
+      })
+    }
+
+    return addGameEvents(sendGameBodyPosition)
   }, [])
 })
 
