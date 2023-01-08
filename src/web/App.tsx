@@ -1,6 +1,7 @@
 import GameStore from '@/package/Model/GameStore'
 import GameMatterContext from '@/package/Renderer/GameMatterContext'
 import CharacterBody from '@/web/component/CharacterBody'
+import OppositeCharacterBody from '@/web/component/OppositeCharacterBody'
 import WallBody from '@/web/component/WallBody'
 import { RESOLUTION } from '@/web/config'
 import MyGameFactory from '@/web/Model/MyGameFactory'
@@ -65,7 +66,9 @@ const App = () => {
             resolution: RESOLUTION
           }}
         >
-          <CharacterBody gameBody={MyGameFactory.createMyCharacterBody('1')} />
+          <OppositeCharacterBody
+            gameBody={MyGameFactory.createMyCharacterBody('1')}
+          />
           <WallBody
             gameBody={MyGameFactory.createWall({
               width: RESOLUTION.width,
