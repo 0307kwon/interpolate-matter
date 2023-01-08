@@ -1,4 +1,4 @@
-import { GameBody } from '@/package'
+import { GameBody, GameEvent } from '@/package'
 import useGameEvent from '@/package/hook/role/body/util/useGameEvent'
 import useKeyDown from '@/package/hook/role/body/util/useKeyDown'
 import useCharacterInterface from '@/package/hook/role/useCharacterInterface'
@@ -43,11 +43,24 @@ const CharacterBody = withGameLogic(CharacterBodyShape, ({ gameBody }) => {
       KeyW: jump
     })
 
-    const sendGameBodyPosition = () => {
-      communicator.send({
-        position: gameBody.position,
+    let beforeTimeStamp = 0
+    const sendGameBodyPosition: GameEvent = (e) => {
+      if (e.timestamp - beforeTimeStamp < 100) {
+        return
+      }
+      beforeTimeStamp = e.timestamp
+      console.log('전송')
+
+      const message = {
+        position: {
+          ...gameBody.position
+        },
         angle: gameBody.angle
-      })
+      }
+
+      setTimeout(() => {
+        communicator.send(message)
+      }, 150)
     }
 
     return addGameEvents(sendGameBodyPosition)
