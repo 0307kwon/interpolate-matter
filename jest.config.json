@@ -1,0 +1,10 @@
+{
+  "preset": "ts-jest",
+  "moduleNameMapper": {
+    "^@/(.*)": "<rootDir>/src/$1"
+  },
+  "transform": {
+    "^.+\\.(js|jsx)$": "babel-jest"
+  },
+  "transformIgnorePatterns": ["/node_modules/(?!(d3-interpolate|d3-color)/)"]
+}
