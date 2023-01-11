@@ -49,7 +49,6 @@ const CharacterBody = withGameLogic(CharacterBodyShape, ({ gameBody }) => {
         return
       }
       beforeTimeStamp = e.timestamp
-      console.log('전송')
 
       const message = {
         position: {

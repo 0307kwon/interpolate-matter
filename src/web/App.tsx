@@ -78,7 +78,7 @@ const App = () => {
           }}
         >
           <OppositeCharacterBody
-            gameBody={MyGameFactory.createMyCharacterBody('1')}
+            gameBody={MyGameFactory.createOtherBody('1')}
           />
           <WallBody
             gameBody={MyGameFactory.createWall({

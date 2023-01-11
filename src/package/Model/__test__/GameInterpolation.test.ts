@@ -46,4 +46,16 @@ describe('GameInterpolation.popPoint', () => {
 
     expect(points).toEqual([7.94, 9])
   })
+
+  test('이전과 비슷한 값이 종착지로 추가되었을 때 무시한다.', () => {
+    const frameCountToNextPoint = 2
+    const interpolation = new GameInterpolation({
+      minPoint: 3,
+      frameCountToNextPoint
+    })
+
+    interpolation.addDestination(1)
+
+    expect(interpolation.addDestination(1.4)).toBe(false)
+  })
 })

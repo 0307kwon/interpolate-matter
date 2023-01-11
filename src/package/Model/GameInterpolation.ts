@@ -22,6 +22,15 @@ export default class GameInterpolation {
   }
 
   addDestination(...destinations: number[]) {
+    if (
+      this.destinations[destinations.length - 1] &&
+      Math.abs(
+        destinations[0] - this.destinations[destinations.length - 1].value
+      ) < 0.5
+    ) {
+      return false
+    }
+
     this.destinations.push(
       ...destinations.map((value) => ({
         calculated: false,
@@ -46,7 +55,7 @@ export default class GameInterpolation {
     )
 
     if (uncalculatedDestinationIdx < 0) {
-      throw new Error()
+      return null
     }
 
     if (uncalculatedDestinationIdx !== this.destinations.length - 1) {
