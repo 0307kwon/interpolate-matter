@@ -13,12 +13,12 @@ export const OppositeCharacterBody = withGameLogic(
 
     useEffect(() => {
       const interpolationX = new GameInterpolation({
-        minPoint: 3,
-        frameCountToNextPoint: 4
+        minPoint: 4,
+        maxFrameCountToNextPoint: 4
       })
       const interpolationY = new GameInterpolation({
-        minPoint: 3,
-        frameCountToNextPoint: 4
+        minPoint: 4,
+        maxFrameCountToNextPoint: 4
       })
 
       communicator.receive((message) => {
@@ -28,12 +28,12 @@ export const OppositeCharacterBody = withGameLogic(
       })
 
       const syncGameBody = () => {
-        const positionX = interpolationX.popPoint() || gameBody.position.x
-        const positionY = interpolationY.popPoint() || gameBody.position.y
+        const positionX = interpolationX.popPoint()
+        const positionY = interpolationY.popPoint()
 
         Body.setPosition(gameBody, {
-          x: positionX,
-          y: positionY
+          x: positionX || gameBody.position.x,
+          y: positionY || gameBody.position.y
         })
       }
 

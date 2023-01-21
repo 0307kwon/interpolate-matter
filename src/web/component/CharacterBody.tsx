@@ -45,6 +45,7 @@ const CharacterBody = withGameLogic(CharacterBodyShape, ({ gameBody }) => {
 
     let beforeTimeStamp = 0
     const sendGameBodyPosition: GameEvent = (e) => {
+      // 데이터 전송 간격
       if (e.timestamp - beforeTimeStamp < 100) {
         return
       }
@@ -57,6 +58,7 @@ const CharacterBody = withGameLogic(CharacterBodyShape, ({ gameBody }) => {
         angle: gameBody.angle
       }
 
+      // 레이턴시 구현
       setTimeout(() => {
         communicator.send(message)
       }, 150)
