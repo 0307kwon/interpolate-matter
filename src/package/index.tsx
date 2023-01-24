@@ -1,8 +1,8 @@
-import Model from "@/package/Model";
-import Renderer from "@/package/Renderer";
-import React from "react";
+import Model from '@/package/Model'
+import Renderer from '@/package/Renderer'
+import React from 'react'
 
-window.React = React;
+window.React = React
 
-export * from "./types";
-export { Model, Renderer };
+export * from './types'
+export { Model, Renderer }

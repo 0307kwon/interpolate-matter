@@ -42,10 +42,25 @@ export default class MyGameFactory extends GameFactory {
     return character
   }
 
-  static createOtherBody(gameId: string) {
-    const character = MyGameFactory.createMyCharacterBody(gameId)
+  static createSynchronizedBody(gameId: string) {
+    const character = MyGameFactory.createBasicCharacterBody({
+      matterType: MATTER_TYPE.otherCharacter,
+      gameId
+    })
 
-    Body.setStatic(character, true)
+    return character
+  }
+
+  static createOtherBody(gameId: string) {
+    const character = MyGameFactory.createBasicCharacterBody({
+      matterType: MATTER_TYPE.otherCharacter,
+      gameId
+    })
+
+    Body.setPosition(character, {
+      x: 256,
+      y: 675
+    })
 
     return character
   }

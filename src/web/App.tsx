@@ -1,7 +1,8 @@
 import GameStore from '@/package/Model/GameStore'
 import GameMatterContext from '@/package/Renderer/GameMatterContext'
-import CharacterBody from '@/web/component/CharacterBody'
-import { OppositeCharacterBody } from '@/web/component/OppositeCharacterBody'
+import MyCharacterBody from '@/web/component/MyCharacterBody'
+import { OtherCharacterBody } from '@/web/component/OtherCharacterBody'
+import { SynchronizedCharacterBody } from '@/web/component/SynchronizedCharacterBody'
 import WallBody from '@/web/component/WallBody'
 import { RESOLUTION } from '@/web/config'
 import Communicator from '@/web/Model/Communicator'
@@ -17,7 +18,9 @@ interface SyncUpMsg {
   angle?: number
 }
 
-export const communicator = Communicator<SyncUpMsg>()
+export const communicators = {
+  '1': Communicator<SyncUpMsg>()
+}
 
 const gameMatterStore1 = new GameStore({
   engine: Engine.create()
@@ -44,9 +47,10 @@ const App = () => {
               resolution: RESOLUTION
             }}
           >
-            <CharacterBody
+            <MyCharacterBody
               gameBody={MyGameFactory.createMyCharacterBody('1')}
             />
+            <OtherCharacterBody gameBody={MyGameFactory.createOtherBody('2')} />
             <WallBody
               gameBody={MyGameFactory.createWall({
                 width: RESOLUTION.width,
@@ -87,8 +91,8 @@ const App = () => {
               resolution: RESOLUTION
             }}
           >
-            <OppositeCharacterBody
-              gameBody={MyGameFactory.createOtherBody('1')}
+            <SynchronizedCharacterBody
+              gameBody={MyGameFactory.createSynchronizedBody('1')}
             />
             <WallBody
               gameBody={MyGameFactory.createWall({
