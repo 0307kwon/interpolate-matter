@@ -30,85 +30,100 @@ const gameMatterStore2 = new GameStore({
 const App = () => {
   return (
     <div className={classes.root}>
+      <div className={classes.header}>
+        <h1>Interpolation simulator</h1>
+      </div>
       <div className={classes.game}>
-        <GameMatterContext
-          store={gameMatterStore1}
-          options={{
-            canvasElementId: 'canvas',
-            fps: 60,
-            resolution: RESOLUTION
-          }}
-        >
-          <CharacterBody gameBody={MyGameFactory.createMyCharacterBody('1')} />
-          <WallBody
-            gameBody={MyGameFactory.createWall({
-              width: RESOLUTION.width,
-              thickness: 20,
-              x: RESOLUTION.width / 2,
-              y: RESOLUTION.height - 20
-            })}
-          />
-          <WallBody
-            gameBody={MyGameFactory.createWall({
-              width: RESOLUTION.height,
-              thickness: 20,
-              x: 10,
-              y: RESOLUTION.height / 2,
-              angle: 90
-            })}
-            transparent={true}
-          />
-          <WallBody
-            gameBody={MyGameFactory.createWall({
-              width: RESOLUTION.height,
-              thickness: 20,
-              x: RESOLUTION.width - 10,
-              y: RESOLUTION.height / 2,
-              angle: 90
-            })}
-            transparent={true}
-          />
-        </GameMatterContext>
-        <GameMatterContext
-          store={gameMatterStore2}
-          options={{
-            canvasElementId: 'canvas2',
-            fps: 60,
-            resolution: RESOLUTION
-          }}
-        >
-          <OppositeCharacterBody
-            gameBody={MyGameFactory.createOtherBody('1')}
-          />
-          <WallBody
-            gameBody={MyGameFactory.createWall({
-              width: RESOLUTION.width,
-              thickness: 20,
-              x: RESOLUTION.width / 2,
-              y: RESOLUTION.height - 20
-            })}
-          />
-          <WallBody
-            gameBody={MyGameFactory.createWall({
-              width: RESOLUTION.height,
-              thickness: 20,
-              x: 10,
-              y: RESOLUTION.height / 2,
-              angle: 90
-            })}
-            transparent={true}
-          />
-          <WallBody
-            gameBody={MyGameFactory.createWall({
-              width: RESOLUTION.height,
-              thickness: 20,
-              x: RESOLUTION.width - 10,
-              y: RESOLUTION.height / 2,
-              angle: 90
-            })}
-            transparent={true}
-          />
-        </GameMatterContext>
+        <div className={classes.gameMatterContext}>
+          <p>origin</p>
+          <GameMatterContext
+            store={gameMatterStore1}
+            options={{
+              canvasElementId: 'canvas',
+              fps: 60,
+              resolution: RESOLUTION
+            }}
+          >
+            <CharacterBody
+              gameBody={MyGameFactory.createMyCharacterBody('1')}
+            />
+            <WallBody
+              gameBody={MyGameFactory.createWall({
+                width: RESOLUTION.width,
+                thickness: 20,
+                x: RESOLUTION.width / 2,
+                y: RESOLUTION.height - 20
+              })}
+            />
+            <WallBody
+              gameBody={MyGameFactory.createWall({
+                width: RESOLUTION.height,
+                thickness: 20,
+                x: 10,
+                y: RESOLUTION.height / 2,
+                angle: 90
+              })}
+              transparent={true}
+            />
+            <WallBody
+              gameBody={MyGameFactory.createWall({
+                width: RESOLUTION.height,
+                thickness: 20,
+                x: RESOLUTION.width - 10,
+                y: RESOLUTION.height / 2,
+                angle: 90
+              })}
+              transparent={true}
+            />
+          </GameMatterContext>
+        </div>
+        <div className={classes.gameMatterContext}>
+          <p>synchronized</p>
+          <GameMatterContext
+            store={gameMatterStore2}
+            options={{
+              canvasElementId: 'canvas2',
+              fps: 60,
+              resolution: RESOLUTION
+            }}
+          >
+            <OppositeCharacterBody
+              gameBody={MyGameFactory.createOtherBody('1')}
+            />
+            <WallBody
+              gameBody={MyGameFactory.createWall({
+                width: RESOLUTION.width,
+                thickness: 20,
+                x: RESOLUTION.width / 2,
+                y: RESOLUTION.height - 20
+              })}
+            />
+            <WallBody
+              gameBody={MyGameFactory.createWall({
+                width: RESOLUTION.height,
+                thickness: 20,
+                x: 10,
+                y: RESOLUTION.height / 2,
+                angle: 90
+              })}
+              transparent={true}
+            />
+            <WallBody
+              gameBody={MyGameFactory.createWall({
+                width: RESOLUTION.height,
+                thickness: 20,
+                x: RESOLUTION.width - 10,
+                y: RESOLUTION.height / 2,
+                angle: 90
+              })}
+              transparent={true}
+            />
+          </GameMatterContext>
+        </div>
+      </div>
+      <div className={classes.panel}>
+        <h2>Panel</h2>
+        <div className={classes.panelBody}></div>
       </div>
     </div>
   )

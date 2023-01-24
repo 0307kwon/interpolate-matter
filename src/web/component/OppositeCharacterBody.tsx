@@ -13,12 +13,13 @@ export const OppositeCharacterBody = withGameLogic(
 
     useEffect(() => {
       const interpolationX = new GameInterpolation({
-        minPoint: 4,
-        maxFrameCountToNextPoint: 4
+        minPoint: 2,
+        maxFrameCountToNextPoint: 6
       })
       const interpolationY = new GameInterpolation({
-        minPoint: 4,
-        maxFrameCountToNextPoint: 4
+        // TODO: 다른 사용자는 80fps? 정도로 높게 나만 60fps로 고정
+        minPoint: 2,
+        maxFrameCountToNextPoint: 6
       })
 
       communicator.receive((message) => {

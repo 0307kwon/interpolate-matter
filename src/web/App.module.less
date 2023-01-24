@@ -1,14 +1,56 @@
 .root {
-  height: 99vh;
-  width: 100%;
+  height: 98vh;
+  position: relative;
+  overflow-x: hidden;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+
+  .header {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    padding-left: 23px;
+  }
 
   .game {
     display: flex;
     width: 100%;
+    padding: 23px;
+    gap: 7px;
+    background-color: #ecf0f1;
+  }
+
+  .gameMatterContext {
+    position: relative;
+    display: flex;
+    width: 100%;
     max-width: 1280px;
     max-height: 720px;
+    background-color: white;
+
+    & > p {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+  }
+
+  .panel {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    border-top: 1px solid #7f8c8d;
+
+    h2 {
+      padding: 11px 23px;
+      font-size: 20px;
+    }
+
+    .panelBody {
+      padding: 11px 23px;
+      border-top: 1px solid #7f8c8d;
+    }
   }
 }
