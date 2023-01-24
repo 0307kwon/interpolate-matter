@@ -19,6 +19,9 @@ export default class MyGameFactory extends GameFactory {
       chamfer: {
         radius: [40, 40, 0, 0]
       },
+      collisionFilter: {
+        group: -1
+      },
       customOption: {
         matterType,
         gameId,
@@ -82,5 +85,27 @@ export default class MyGameFactory extends GameFactory {
     })
 
     return wall
+  }
+
+  static createDestinationPoint(position: { x: number; y: number }) {
+    const point = MyGameFactory.createGameBody({
+      width: 10,
+      height: 10,
+      x: position.x,
+      y: position.y,
+      render: {
+        fillStyle: 'red'
+      },
+      collisionFilter: {
+        group: -1
+      },
+      customOption: {
+        matterType: MATTER_TYPE.point
+      }
+    })
+
+    Body.setStatic(point, true)
+
+    return point
   }
 }

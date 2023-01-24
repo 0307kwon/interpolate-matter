@@ -1,27 +1,32 @@
 import useGameBodyEvent from '@/package/hook/role/body/useGameBodyEvent'
 import useGameEvent from '@/package/hook/role/body/util/useGameEvent'
 import GameInterpolation from '@/package/Model/GameInterpolation'
+import { useGameMatterContext } from '@/package/Renderer/GameMatterContext'
 import withGameLogic from '@/package/Renderer/withGameLogic'
 import { communicators } from '@/web/App'
 import { CharacterBodyShape } from '@/web/component/MyCharacterBody'
+import MyGameFactory from '@/web/Model/MyGameFactory'
+import { latencyState } from '@/web/recoil/atom'
 import { Body } from 'matter-js'
 import { useEffect } from 'react'
+import { useRecoilValue } from 'recoil'
 
 export const SynchronizedCharacterBody = withGameLogic(
   CharacterBodyShape,
   ({ gameBody }) => {
     const { addGameEvents } = useGameEvent()
     const { getOffsettingGravityEvent } = useGameBodyEvent(gameBody)
+    const { gamePainter } = useGameMatterContext()
+    const latency = useRecoilValue(latencyState)
 
     useEffect(() => {
       const interpolationX = new GameInterpolation({
         minPoint: 2,
-        maxFrameCountToNextPoint: 6
+        maxFrameCountToNextPoint: 20
       })
       const interpolationY = new GameInterpolation({
-        // TODO: 다른 사용자는 80fps? 정도로 높게. 나만 60fps로 고정
         minPoint: 2,
-        maxFrameCountToNextPoint: 6
+        maxFrameCountToNextPoint: 20
       })
 
       const communicator =
@@ -36,6 +41,17 @@ export const SynchronizedCharacterBody = withGameLogic(
         const { x, y } = message.position
         interpolationX.addDestination(x)
         interpolationY.addDestination(y)
+
+        const point = MyGameFactory.createDestinationPoint({
+          x,
+          y
+        })
+
+        gamePainter.spawnGameBody(point)
+
+        setTimeout(() => {
+          gamePainter.unspawnGameBody(point)
+        }, latency.value * 10)
       })
 
       const syncGameBody = () => {
