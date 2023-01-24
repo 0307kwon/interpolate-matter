@@ -1,15 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import "./global.less";
+import App from '@/web/App'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { RecoilRoot } from 'recoil'
+import './global.less'
 
-window.React = React;
+window.React = React
 
-const $root = document.querySelector("#root");
+const $root = document.querySelector('#root')
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
   </React.StrictMode>,
   $root
-);
+)

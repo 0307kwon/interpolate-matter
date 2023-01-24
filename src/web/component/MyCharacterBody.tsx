@@ -7,8 +7,10 @@ import withGameLogic from '@/package/Renderer/withGameLogic'
 import { communicators } from '@/web/App'
 import NameTag from '@/web/component/NameTag'
 import characterImg from '@/web/public/img/character.gif'
+import { latencyState, transferIntervalState } from '@/web/recoil/atom'
 import { CharacterBodyOptions } from '@/web/type'
 import { useEffect } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
 export interface BodyShapeProps {
   gameBody: GameBody<CharacterBodyOptions>
@@ -32,6 +34,10 @@ const MyCharacterBody = withGameLogic(CharacterBodyShape, ({ gameBody }) => {
   const { moveLeft, moveRight, jump } = useCharacterInterface(gameBody)
   const { setContinualKeyInput, setInstantKeyInput } = useKeyDown()
   const { addGameEvents } = useGameEvent()
+  const latency = useRecoilValue(latencyState)
+  const [transferInterval, setTransferInterval] = useRecoilState(
+    transferIntervalState
+  )
 
   useEffect(() => {
     setContinualKeyInput({
@@ -47,10 +53,15 @@ const MyCharacterBody = withGameLogic(CharacterBodyShape, ({ gameBody }) => {
 
     const sendGameBodyPosition: GameEvent = (e) => {
       // 데이터 전송 간격
-      if (e.timestamp - beforeTimeStamp < 100) {
+      if (e.timestamp - beforeTimeStamp < transferInterval.value) {
         return
       }
+
       beforeTimeStamp = e.timestamp
+      setTransferInterval((prev) => ({
+        ...prev,
+        sendingCount: prev.sendingCount + 1
+      }))
 
       const message = {
         position: {
@@ -69,11 +80,11 @@ const MyCharacterBody = withGameLogic(CharacterBodyShape, ({ gameBody }) => {
       // 레이턴시 구현
       setTimeout(() => {
         communicator.send(message)
-      }, 150)
+      }, latency.value)
     }
 
     return addGameEvents(sendGameBodyPosition)
-  }, [])
+  }, [latency.value, transferInterval.value])
 })
 
 export default MyCharacterBody

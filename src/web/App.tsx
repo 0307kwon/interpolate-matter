@@ -2,6 +2,8 @@ import GameStore from '@/package/Model/GameStore'
 import GameMatterContext from '@/package/Renderer/GameMatterContext'
 import MyCharacterBody from '@/web/component/MyCharacterBody'
 import { OtherCharacterBody } from '@/web/component/OtherCharacterBody'
+import LatencyPanel from '@/web/component/panel/LatencyPanel'
+import TransferIntervalPanel from '@/web/component/panel/TransferIntervalPanel'
 import { SynchronizedCharacterBody } from '@/web/component/SynchronizedCharacterBody'
 import WallBody from '@/web/component/WallBody'
 import { RESOLUTION } from '@/web/config'
@@ -127,7 +129,10 @@ const App = () => {
       </div>
       <div className={classes.panel}>
         <h2>Panel</h2>
-        <div className={classes.panelBody}></div>
+        <div>
+          <LatencyPanel />
+          <TransferIntervalPanel />
+        </div>
       </div>
     </div>
   )
