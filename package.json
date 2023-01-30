@@ -71,6 +71,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "d3-interpolate": "^3.0.1"
+    "d3-interpolate": "^3.0.1",
+    "d3-interpolate-curve": "^1.0.5"
   }
 }

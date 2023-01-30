@@ -20,12 +20,8 @@ export const SynchronizedCharacterBody = withGameLogic(
     const latency = useRecoilValue(latencyState)
 
     useEffect(() => {
-      const interpolationX = new GameInterpolation({
-        minPoint: 2,
-        maxFrameCountToNextPoint: 20
-      })
-      const interpolationY = new GameInterpolation({
-        minPoint: 2,
+      const interpolation = new GameInterpolation({
+        minPoint: 4,
         maxFrameCountToNextPoint: 20
       })
 
@@ -39,29 +35,46 @@ export const SynchronizedCharacterBody = withGameLogic(
 
       communicator.receive((message) => {
         const { x, y } = message.position
-        interpolationX.addDestination(x)
-        interpolationY.addDestination(y)
+        interpolation.addDestination({ x, y })
 
-        const point = MyGameFactory.createDestinationPoint({
-          x,
-          y
-        })
-
+        const point = MyGameFactory.createDestinationPoint(
+          message.position,
+          'blue'
+        )
         gamePainter.spawnGameBody(point)
 
         setTimeout(() => {
           gamePainter.unspawnGameBody(point)
         }, latency.value * 10)
+
+        // const point = MyGameFactory.createDestinationPoint({
+        //   x,
+        //   y
+        // })
+
+        // gamePainter.spawnGameBody(point)
+
+        // setTimeout(() => {
+        //   gamePainter.unspawnGameBody(point)
+        // }, latency.value * 10)
       })
 
       const syncGameBody = () => {
-        const positionX = interpolationX.popPoint()
-        const positionY = interpolationY.popPoint()
+        const position = interpolation.popPoint()
 
-        Body.setPosition(gameBody, {
-          x: positionX || gameBody.position.x,
-          y: positionY || gameBody.position.y
-        })
+        if (position) {
+          const point = MyGameFactory.createDestinationPoint(position)
+          gamePainter.spawnGameBody(point)
+
+          setTimeout(() => {
+            gamePainter.unspawnGameBody(point)
+          }, latency.value * 10)
+
+          Body.setPosition(gameBody, {
+            x: position.x,
+            y: position.y
+          })
+        }
       }
 
       return addGameEvents(

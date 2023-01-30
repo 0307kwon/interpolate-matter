@@ -87,14 +87,17 @@ export default class MyGameFactory extends GameFactory {
     return wall
   }
 
-  static createDestinationPoint(position: { x: number; y: number }) {
+  static createDestinationPoint(
+    position: { x: number; y: number },
+    color: string = 'red'
+  ) {
     const point = MyGameFactory.createGameBody({
       width: 10,
       height: 10,
       x: position.x,
       y: position.y,
       render: {
-        fillStyle: 'red'
+        fillStyle: color
       },
       collisionFilter: {
         group: -1
