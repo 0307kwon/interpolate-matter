@@ -21,8 +21,8 @@ export const SynchronizedCharacterBody = withGameLogic(
 
     useEffect(() => {
       const interpolation = new GameInterpolation({
-        minPoint: 4,
-        maxFrameCountToNextPoint: 20
+        minPoint: 3,
+        maxFrameCountToNextPoint: 1
       })
 
       const communicator =

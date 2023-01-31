@@ -6,5 +6,7 @@
   "transform": {
     "^.+\\.(js|jsx)$": "babel-jest"
   },
-  "transformIgnorePatterns": ["/node_modules/(?!(d3-interpolate|d3-color)/)"]
+  "transformIgnorePatterns": [
+    "/node_modules/(?!(d3-interpolate|d3-color|d3-interpolate-curve|d3-shape|d3-path|d3-array|internmap)/)"
+  ]
 }

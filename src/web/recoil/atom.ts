@@ -10,7 +10,7 @@ export const latencyState = atom({
 export const transferIntervalState = atom({
   key: 'transferInterval',
   default: {
-    value: 300,
+    value: 17,
     sendingCount: 0
   }
 })
