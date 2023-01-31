@@ -6,7 +6,11 @@ import withGameLogic from '@/package/Renderer/withGameLogic'
 import { communicators } from '@/web/App'
 import { CharacterBodyShape } from '@/web/component/MyCharacterBody'
 import MyGameFactory from '@/web/Model/MyGameFactory'
-import { latencyState } from '@/web/recoil/atom'
+import {
+  latencyState,
+  maxFrameCountToNextPointState,
+  minPointState
+} from '@/web/recoil/atom'
 import { Body } from 'matter-js'
 import { useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
@@ -18,11 +22,15 @@ export const SynchronizedCharacterBody = withGameLogic(
     const { getOffsettingGravityEvent } = useGameBodyEvent(gameBody)
     const { gamePainter } = useGameMatterContext()
     const latency = useRecoilValue(latencyState)
+    const minPoint = useRecoilValue(minPointState)
+    const maxFrameCountToNextPoint = useRecoilValue(
+      maxFrameCountToNextPointState
+    )
 
     useEffect(() => {
       const interpolation = new GameInterpolation({
-        minPoint: 3,
-        maxFrameCountToNextPoint: 1
+        minPoint: minPoint.value,
+        maxFrameCountToNextPoint: maxFrameCountToNextPoint.value
       })
 
       const communicator =
@@ -52,15 +60,12 @@ export const SynchronizedCharacterBody = withGameLogic(
         const position = interpolation.popPoint()
 
         if (position) {
-          const point = MyGameFactory.createDestinationPoint(position)
+          const point = MyGameFactory.createDestinationPoint(position, 'red')
           gamePainter.spawnGameBody(point)
 
-          setTimeout(
-            () => {
-              gamePainter.unspawnGameBody(point)
-            },
-            latency.value > 100 ? latency.value : 100
-          )
+          setTimeout(() => {
+            gamePainter.unspawnGameBody(point)
+          }, (latency.value > 100 ? latency.value : 100) * 5)
 
           Body.setPosition(gameBody, {
             x: position.x,
@@ -76,6 +81,6 @@ export const SynchronizedCharacterBody = withGameLogic(
         },
         getOffsettingGravityEvent()
       )
-    }, [])
+    }, [minPoint.value, maxFrameCountToNextPoint.value])
   }
 )

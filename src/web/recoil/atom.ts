@@ -14,3 +14,17 @@ export const transferIntervalState = atom({
     sendingCount: 0
   }
 })
+
+export const minPointState = atom({
+  key: 'minPoint',
+  default: {
+    value: 2
+  }
+})
+
+export const maxFrameCountToNextPointState = atom({
+  key: 'maxFrameCountToNextPoint',
+  default: {
+    value: 1
+  }
+})

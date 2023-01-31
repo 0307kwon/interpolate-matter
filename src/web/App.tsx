@@ -3,6 +3,8 @@ import GameMatterContext from '@/package/Renderer/GameMatterContext'
 import MyCharacterBody from '@/web/component/MyCharacterBody'
 import { OtherCharacterBody } from '@/web/component/OtherCharacterBody'
 import LatencyPanel from '@/web/component/panel/LatencyPanel'
+import MaxFrameCountToNextPointPanel from '@/web/component/panel/MaxFrameCountToNextPointPanel'
+import MinPointPanel from '@/web/component/panel/MinPointPanel'
 import TransferIntervalPanel from '@/web/component/panel/TransferIntervalPanel'
 import { SynchronizedCharacterBody } from '@/web/component/SynchronizedCharacterBody'
 import WallBody from '@/web/component/WallBody'
@@ -132,6 +134,8 @@ const App = () => {
         <div>
           <LatencyPanel />
           <TransferIntervalPanel />
+          <MinPointPanel />
+          <MaxFrameCountToNextPointPanel />
         </div>
       </div>
     </div>
