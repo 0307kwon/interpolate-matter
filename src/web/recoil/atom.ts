@@ -3,7 +3,7 @@ import { atom } from 'recoil'
 export const latencyState = atom({
   key: 'latency',
   default: {
-    value: 150
+    value: 0
   }
 })
 

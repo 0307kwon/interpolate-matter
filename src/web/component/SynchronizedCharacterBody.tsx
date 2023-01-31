@@ -45,18 +45,7 @@ export const SynchronizedCharacterBody = withGameLogic(
 
         setTimeout(() => {
           gamePainter.unspawnGameBody(point)
-        }, latency.value * 10)
-
-        // const point = MyGameFactory.createDestinationPoint({
-        //   x,
-        //   y
-        // })
-
-        // gamePainter.spawnGameBody(point)
-
-        // setTimeout(() => {
-        //   gamePainter.unspawnGameBody(point)
-        // }, latency.value * 10)
+        }, (latency.value > 100 ? latency.value : 100) * 10)
       })
 
       const syncGameBody = () => {
@@ -66,9 +55,12 @@ export const SynchronizedCharacterBody = withGameLogic(
           const point = MyGameFactory.createDestinationPoint(position)
           gamePainter.spawnGameBody(point)
 
-          setTimeout(() => {
-            gamePainter.unspawnGameBody(point)
-          }, latency.value * 10)
+          setTimeout(
+            () => {
+              gamePainter.unspawnGameBody(point)
+            },
+            latency.value > 100 ? latency.value : 100
+          )
 
           Body.setPosition(gameBody, {
             x: position.x,
