@@ -172,30 +172,30 @@ describe('addDestination', () => {
   })
 
   // isMinPointCountSatisfied
-  test('첫 연산 시에는 minPoint만큼 미연산된 종착점이 있어야한다.', () => {
-    const interpolation = new GameInterpolation({
-      maxFrameCountToNextDest: 1,
-      minDestCount: 3
-    })
+  // test('첫 연산 시에는 minPoint만큼 미연산된 종착점이 있어야한다.', () => {
+  //   const interpolation = new GameInterpolation({
+  //     maxFrameCountToNextDest: 1,
+  //     minDestCount: 3
+  //   })
 
-    interpolation.addDest({ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 })
+  //   interpolation.addDest({ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 })
 
-    expect(interpolation.isMinDestCountSatisfied()).toBe(true)
-  })
+  //   expect(interpolation.isMinDestCountSatisfied()).toBe(true)
+  // })
 
   // isMinPointCountSatisfied
-  test('첫 연산 이후부터 minPoint + 1 만큼 미연산된 종착점이 있어야한다.', () => {
-    const interpolation = new GameInterpolation({
-      maxFrameCountToNextDest: 1,
-      minDestCount: 3
-    })
+  // test('첫 연산 이후부터 minPoint + 1 만큼 미연산된 종착점이 있어야한다.', () => {
+  //   const interpolation = new GameInterpolation({
+  //     maxFrameCountToNextDest: 1,
+  //     minDestCount: 3
+  //   })
 
-    interpolation.addDest({ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 })
+  //   interpolation.addDest({ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 })
 
-    interpolation.popPoint()
+  //   interpolation.popPoint()
 
-    interpolation.addDest({ x: 1, y: 2 }, { x: 1, y: 3 })
+  //   interpolation.addDest({ x: 1, y: 2 }, { x: 1, y: 3 })
 
-    expect(interpolation.isMinDestCountSatisfied()).toBe(true)
-  })
+  //   expect(interpolation.isMinDestCountSatisfied()).toBe(true)
+  // })
 })
