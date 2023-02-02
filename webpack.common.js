@@ -1,75 +1,76 @@
-const path = require("path");
+const path = require('path')
 
 module.exports = {
   module: {
     rules: [
       {
         test: /\.(tsx|ts)$/,
+        exclude: /\.test\.(tsx|ts)$/,
         use: [
           {
-            loader: "babel-loader",
+            loader: 'babel-loader',
             options: {
               presets: [
-                "@babel/preset-env",
-                "@babel/preset-react",
-                "@babel/preset-typescript",
+                '@babel/preset-env',
+                '@babel/preset-react',
+                '@babel/preset-typescript'
               ],
-              plugins: ["@babel/plugin-transform-runtime"],
-            },
-          },
-        ],
+              plugins: ['@babel/plugin-transform-runtime']
+            }
+          }
+        ]
       },
       {
         test: /\.less$/,
         exclude: /\.module\.less$/,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader'
           },
           {
-            loader: "css-loader", // translates CSS into CommonJS
+            loader: 'css-loader' // translates CSS into CommonJS
           },
           {
-            loader: "less-loader", // compiles Less to CSS
+            loader: 'less-loader', // compiles Less to CSS
             options: {
               lessOptions: {
                 // If you are using less-loader@5 please spread the lessOptions to options directly
                 javascriptEnabled: true,
-                relativeUrls: false,
-              },
-            },
-          },
-        ],
+                relativeUrls: false
+              }
+            }
+          }
+        ]
       },
       {
         test: /\.module\.less$/,
         use: [
-          "style-loader",
+          'style-loader',
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: "[name]__[local]--[hash:base64:5]",
-              },
-            },
+                localIdentName: '[name]__[local]--[hash:base64:5]'
+              }
+            }
           },
           {
-            loader: "less-loader",
+            loader: 'less-loader',
             options: {
               lessOptions: {
-                javascriptEnabled: true,
-              },
-            },
-          },
-        ],
-      },
-    ],
+                javascriptEnabled: true
+              }
+            }
+          }
+        ]
+      }
+    ]
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js", ".jsx"],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
     alias: {
-      "@": path.resolve(__dirname, "src"),
-    },
+      '@': path.resolve(__dirname, 'src')
+    }
   },
-  cache: false,
-};
+  cache: false
+}

@@ -21,12 +21,12 @@ describe('section', () => {
   })
 })
 
-describe('GameInterpolation class', () => {
+describe('addDestination', () => {
   // minPoint = 현재 point + 계산되지 않은 point 갯수
   test('현재 point 1개 + 계산되지 않은 point 갯수가 minPoint 미만이면 같은 종착점이라도 추가한다.', () => {
     const interpolation = new GameInterpolation({
-      minPoint: 2,
-      maxFrameCountToNextPoint: 1
+      minDestCount: 2,
+      maxFrameCountToNextDest: 1
     })
 
     let destCount = 0
@@ -59,8 +59,8 @@ describe('GameInterpolation class', () => {
 
   test('같은 종착점에 대해서 여러번 point를 계산하지 않는다.', () => {
     const interpolation = new GameInterpolation({
-      minPoint: 3,
-      maxFrameCountToNextPoint: 1
+      minDestCount: 3,
+      maxFrameCountToNextDest: 1
     })
 
     interpolation.addDestination(
@@ -107,8 +107,8 @@ describe('GameInterpolation class', () => {
 
   test('여러개의 같은 종착점 입력 이후 새로운 종착점이 입력되면 새로운 point가 출력된다.', () => {
     const interpolation = new GameInterpolation({
-      minPoint: 4,
-      maxFrameCountToNextPoint: 1
+      minDestCount: 4,
+      maxFrameCountToNextDest: 1
     })
 
     interpolation.addDestination(
@@ -173,20 +173,20 @@ describe('GameInterpolation class', () => {
   // isMinPointCountSatisfied
   test('첫 연산 시에는 minPoint만큼 미연산된 종착점이 있어야한다.', () => {
     const interpolation = new GameInterpolation({
-      maxFrameCountToNextPoint: 1,
-      minPoint: 3
+      maxFrameCountToNextDest: 1,
+      minDestCount: 3
     })
 
     interpolation.addDestination({ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 })
 
-    expect(interpolation.isMinPointCountSatisfied()).toBe(true)
+    expect(interpolation.isMinDestCountSatisfied()).toBe(true)
   })
 
   // isMinPointCountSatisfied
-  test.only('첫 연산 이후부터 minPoint + 1 만큼 미연산된 종착점이 있어야한다.', () => {
+  test('첫 연산 이후부터 minPoint + 1 만큼 미연산된 종착점이 있어야한다.', () => {
     const interpolation = new GameInterpolation({
-      maxFrameCountToNextPoint: 1,
-      minPoint: 3
+      maxFrameCountToNextDest: 1,
+      minDestCount: 3
     })
 
     interpolation.addDestination({ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 })
@@ -195,6 +195,6 @@ describe('GameInterpolation class', () => {
 
     interpolation.addDestination({ x: 1, y: 2 }, { x: 1, y: 3 })
 
-    expect(interpolation.isMinPointCountSatisfied()).toBe(true)
+    expect(interpolation.isMinDestCountSatisfied()).toBe(true)
   })
 })
