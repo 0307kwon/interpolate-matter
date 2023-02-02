@@ -1,4 +1,5 @@
-import GameInterpolation, { section } from '@/package/Model/GameInterpolation'
+import GameInterpolation from '@/package/Model/GameInterpolation'
+import { section } from '@/package/Model/GameInterpolation/util'
 import { describe, expect, test } from '@jest/globals'
 
 describe('section', () => {
@@ -31,7 +32,7 @@ describe('addDestination', () => {
 
     let destCount = 0
     ;[...Array(2)].forEach(() => {
-      const result = interpolation.addDestination({
+      const result = interpolation.addDest({
         x: 2,
         y: 2
       })
@@ -44,7 +45,7 @@ describe('addDestination', () => {
       interpolation.popPoint()
     })
     ;[...Array(1)].forEach(() => {
-      const result = interpolation.addDestination({
+      const result = interpolation.addDest({
         x: 2,
         y: 2
       })
@@ -63,7 +64,7 @@ describe('addDestination', () => {
       maxFrameCountToNextDest: 1
     })
 
-    interpolation.addDestination(
+    interpolation.addDest(
       {
         x: 2,
         y: 2
@@ -111,7 +112,7 @@ describe('addDestination', () => {
       maxFrameCountToNextDest: 1
     })
 
-    interpolation.addDestination(
+    interpolation.addDest(
       {
         x: 2,
         y: 2
@@ -149,7 +150,7 @@ describe('addDestination', () => {
       console.log(result)
     })
 
-    interpolation.addDestination(
+    interpolation.addDest(
       {
         x: 2,
         y: 4
@@ -177,7 +178,7 @@ describe('addDestination', () => {
       minDestCount: 3
     })
 
-    interpolation.addDestination({ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 })
+    interpolation.addDest({ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 })
 
     expect(interpolation.isMinDestCountSatisfied()).toBe(true)
   })
@@ -189,11 +190,11 @@ describe('addDestination', () => {
       minDestCount: 3
     })
 
-    interpolation.addDestination({ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 })
+    interpolation.addDest({ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 })
 
     interpolation.popPoint()
 
-    interpolation.addDestination({ x: 1, y: 2 }, { x: 1, y: 3 })
+    interpolation.addDest({ x: 1, y: 2 }, { x: 1, y: 3 })
 
     expect(interpolation.isMinDestCountSatisfied()).toBe(true)
   })

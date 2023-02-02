@@ -44,7 +44,7 @@ export const SynchronizedCharacterBody = withGameLogic(
 
       communicator.receive((message) => {
         const { x, y } = message.position
-        interpolation.addDestination({ x, y })
+        interpolation.addDest({ x, y })
 
         const point = MyGameFactory.createDestinationPoint(
           message.position,
