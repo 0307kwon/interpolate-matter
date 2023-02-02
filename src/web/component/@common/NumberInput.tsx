@@ -11,6 +11,11 @@ const NumberInput = ({ value, setValue }: Props) => {
   const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const value = e.currentTarget.value
 
+    if (value === '') {
+      setInput(value)
+      return
+    }
+
     const number = +value
 
     if (isNaN(number)) {
@@ -18,7 +23,6 @@ const NumberInput = ({ value, setValue }: Props) => {
     }
 
     setValue(number)
-
     setInput(value)
   }
 
@@ -27,9 +31,7 @@ const NumberInput = ({ value, setValue }: Props) => {
       value={input}
       onChange={onChange}
       onBlur={() => {
-        if (value === 0) {
-          setInput('0')
-        }
+        setInput(String(value))
       }}
     />
   )

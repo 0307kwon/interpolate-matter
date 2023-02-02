@@ -11,6 +11,11 @@ const MinDestCountPanel = () => {
       <NumberInput
         value={minDestCount.value}
         setValue={(value) => {
+          if (value <= 1) {
+            alert('Minimum destination count should be grater than 1')
+            return
+          }
+
           setMinDestCount({ value })
         }}
       />
