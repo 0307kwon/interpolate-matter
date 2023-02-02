@@ -8,8 +8,8 @@ import { CharacterBodyShape } from '@/web/component/MyCharacterBody'
 import MyGameFactory from '@/web/Model/MyGameFactory'
 import {
   latencyState,
-  maxFrameCountToNextPointState,
-  minPointState
+  maxFrameCountToNextDestState,
+  minDestCountState
 } from '@/web/recoil/atom'
 import { Body } from 'matter-js'
 import { useEffect, useState } from 'react'
@@ -23,14 +23,14 @@ export const SynchronizedCharacterBody = withGameLogic(
     const { getOffsettingGravityEvent } = useGameBodyEvent(gameBody)
     const { gamePainter } = useGameMatterContext()
     const latency = useRecoilValue(latencyState)
-    const minPoint = useRecoilValue(minPointState)
+    const minDestCount = useRecoilValue(minDestCountState)
     const maxFrameCountToNextPoint = useRecoilValue(
-      maxFrameCountToNextPointState
+      maxFrameCountToNextDestState
     )
 
     useEffect(() => {
       const interpolation = new GameInterpolation({
-        minDestCount: minPoint.value,
+        minDestCount: minDestCount.value,
         maxFrameCountToNextDest: maxFrameCountToNextPoint.value
       })
 
@@ -85,6 +85,6 @@ export const SynchronizedCharacterBody = withGameLogic(
           communicator.resetReceiver()
         }
       )
-    }, [minPoint, maxFrameCountToNextPoint, latency])
+    }, [minDestCount, maxFrameCountToNextPoint, latency])
   }
 )

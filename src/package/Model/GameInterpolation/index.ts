@@ -24,6 +24,10 @@ export default class GameInterpolation {
     minDestCount: number
     maxFrameCountToNextDest: number
   }) {
+    if (param.minDestCount <= 1) {
+      throw new Error('minDestCount should be greater than one')
+    }
+
     this.minDestCount = param.minDestCount
     this.maxFrameCountToNextDest = param.maxFrameCountToNextDest
   }

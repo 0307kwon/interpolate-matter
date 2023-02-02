@@ -1,11 +1,11 @@
 import NumberInput from '@/web/component/@common/NumberInput'
 import BasicPanel from '@/web/component/panel/@common/BasicPanel'
-import { maxFrameCountToNextPointState } from '@/web/recoil/atom'
+import { maxFrameCountToNextDestState } from '@/web/recoil/atom'
 import { useRecoilState } from 'recoil'
 
 const MaxFrameCountToNextPointPanel = () => {
   const [maxFrameCount, setMaxFrameCount] = useRecoilState(
-    maxFrameCountToNextPointState
+    maxFrameCountToNextDestState
   )
   return (
     <BasicPanel name={'Frame count to next point'}>

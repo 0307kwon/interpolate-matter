@@ -4,7 +4,7 @@ import MyCharacterBody from '@/web/component/MyCharacterBody'
 import { OtherCharacterBody } from '@/web/component/OtherCharacterBody'
 import LatencyPanel from '@/web/component/panel/LatencyPanel'
 import MaxFrameCountToNextPointPanel from '@/web/component/panel/MaxFrameCountToNextPointPanel'
-import MinPointPanel from '@/web/component/panel/MinPointPanel'
+import MinDestCountPanel from '@/web/component/panel/MinDestCountPanel'
 import TransferIntervalPanel from '@/web/component/panel/TransferIntervalPanel'
 import { SynchronizedCharacterBody } from '@/web/component/SynchronizedCharacterBody'
 import WallBody from '@/web/component/WallBody'
@@ -13,8 +13,8 @@ import Communicator from '@/web/Model/Communicator'
 import MyGameFactory from '@/web/Model/MyGameFactory'
 import {
   latencyState,
-  maxFrameCountToNextPointState,
-  minPointState,
+  maxFrameCountToNextDestState,
+  minDestCountState,
   transferIntervalState
 } from '@/web/recoil/atom'
 import { Engine } from 'matter-js'
@@ -49,15 +49,15 @@ const App = () => {
   })
   const latency = useRecoilValue(latencyState)
   const transferInterval = useRecoilValue(transferIntervalState)
-  const minPoint = useRecoilValue(minPointState)
-  const maxFrameCountToNextPoint = useRecoilValue(maxFrameCountToNextPointState)
+  const minDestCount = useRecoilValue(minDestCountState)
+  const maxFrameCountToNextPoint = useRecoilValue(maxFrameCountToNextDestState)
 
   useEffect(() => {
     const unloadEventCallback = () => {
       const simulatorState = {
         latency: latency.value,
         transferInterval: transferInterval.value,
-        minPoint: minPoint.value,
+        minDestCount: minDestCount.value,
         maxFrameCountToNextPoint: maxFrameCountToNextPoint.value
       }
 
@@ -69,7 +69,7 @@ const App = () => {
     return () => {
       window.removeEventListener('beforeunload', unloadEventCallback)
     }
-  }, [latency, transferInterval, minPoint, maxFrameCountToNextPoint])
+  }, [latency, transferInterval, minDestCount, maxFrameCountToNextPoint])
 
   return (
     <div className={classes.root}>
@@ -168,7 +168,7 @@ const App = () => {
         <div>
           <LatencyPanel />
           <TransferIntervalPanel />
-          <MinPointPanel />
+          <MinDestCountPanel />
           <MaxFrameCountToNextPointPanel />
         </div>
       </div>

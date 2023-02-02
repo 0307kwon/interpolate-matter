@@ -156,7 +156,7 @@ export const calcNewPoints = ({
 
   const points = calcPoints(
     destPointsForCalc,
-    // 이전의 점을 1개 포함했기 대문에 minPoint보다 1개 더 추가
+    // 이전의 점을 1개 포함했기 대문에 minDestCount보다 1개 더 추가
     maxFrameCountToNextDest * (minDestCount - 1 + 1) + 1
   )
     .reduce<Point[]>((prev, cur) => {
