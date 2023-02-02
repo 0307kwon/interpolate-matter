@@ -49,8 +49,8 @@ export default class GameInterpolation {
   private maxFrameCountToNextPoint: number
   private destinations: Destination[] = []
   private points: Point[] = []
-  private isInitialCalculation: boolean = true
-  private lastPoint: Point | undefined
+  private isInitialCalculation = true
+  private hasSameDestsFlag = false
 
   /**
    * @param param.minPoint 보간 연산에 사용할 최소점 갯수
@@ -61,11 +61,16 @@ export default class GameInterpolation {
     this.maxFrameCountToNextPoint = param.maxFrameCountToNextPoint
   }
 
+  isMinPointCountSatisfied() {
+    if (getStartPointIdx(this.destinations) === 0) {
+      return this.getUncalculatedDestCount(this.destinations) >= this.minPoint
+    }
+
+    return this.getUncalculatedDestCount(this.destinations) + 1 >= this.minPoint
+  }
+
   addDestination(...dests: Point[]) {
     // TODO: minPoint 채울 때까지 같은 포인트라도 추가하기
-    const isMinPointSatisfied =
-      this.getUncalculatedDestCount(this.destinations) < this.minPoint
-
     const pushNewDests = () => {
       this.destinations.push(
         ...dests.map((value) => ({
@@ -76,11 +81,13 @@ export default class GameInterpolation {
           }
         }))
       )
+
+      console.log(this.destinations.map((dest) => ({ ...dest })))
     }
 
-    if (isMinPointSatisfied) {
+    if (!this.isMinPointCountSatisfied()) {
       pushNewDests()
-      return
+      return true
     }
 
     if (
@@ -97,7 +104,17 @@ export default class GameInterpolation {
       return false
     }
 
+    if (this.hasSameDestsFlag) {
+      this.hasSameDestsFlag = false
+      // 이전 점, 현재 점으로 2개의 점이 필요
+      this.destinations = this.destinations.slice(-2)
+      this.destinations[0].calculated = true
+      this.destinations[1].calculated = true
+    }
+
     pushNewDests()
+
+    return true
   }
 
   private calcPoints(
@@ -135,24 +152,12 @@ export default class GameInterpolation {
 
   popPoint(): Point | undefined {
     const returnValue: Point | undefined = (() => {
-      if (this.getUncalculatedDestCount(this.destinations) < this.minPoint) {
-        return
-      }
-
       if (this.points.length > 0) {
         return this.points.shift()
       }
 
-      // 더 이상 추가적인 종착지가 존재하지 않을 때, 마지막 종착지를 포인트로 리턴한다.
-      if (
-        !this.isInitialCalculation &&
-        this.destinations.length === this.minPoint &&
-        this.destinations.every((d) => d.calculated)
-      ) {
-        const newLastPoint =
-          this.destinations[this.destinations.length - 1].value
-
-        return newLastPoint
+      if (!this.isMinPointCountSatisfied()) {
+        return
       }
 
       // points가 더 이상 없으면 연산을 통해 추가.
@@ -163,17 +168,11 @@ export default class GameInterpolation {
         return
       }
 
-      // 계산되지 않은 종착점 갯수가 최소 point 갯수보다 작으면 탈출
-      if (this.getUncalculatedDestCount(this.destinations) < this.minPoint) {
-        return
-      }
-
       if (this.isInitialCalculation) {
         // 최초 연산 o
         const points = this.calcPoints(
           section(this.destinations, startPointIdx, [0, this.minPoint - 1]).map(
-            (dest, idx) => {
-              this.destinations[idx].calculated = true
+            (dest) => {
               return dest.value
             }
           ),
@@ -181,40 +180,65 @@ export default class GameInterpolation {
         ).slice(1)
 
         this.points.push(...points)
+        ;[...Array(this.minPoint)].forEach((_, idx) => {
+          this.destinations[idx].calculated = true
+        })
 
         this.isInitialCalculation = false
 
         return this.points.shift()
       }
 
+      const destsForCalc = section(
+        this.destinations,
+        startPointIdx,
+        // 이전의 점을 1개 포함하여, 이전 이동 맥락을 파악
+        [1, this.minPoint - 1]
+      ).map((v) => v.value)
+
+      // 연산에 필요한 점들이 모두 비슷한 점이면 연산하지 않음.
+      if (
+        this.hasSameDestsFlag ||
+        [...Array(destsForCalc.length - 1)].every((_, idx) => {
+          if (idx === 0) return true
+
+          return (
+            similarValue(destsForCalc[idx].x, destsForCalc[1 + idx].x) &&
+            similarValue(destsForCalc[idx].y, destsForCalc[1 + idx].y)
+          )
+        })
+        // this.getUncalculatedDestCount(this.destinations) < this.minPoint
+      ) {
+        this.hasSameDestsFlag = true
+        return
+      }
+
       // 최초 연산 x
       const points = this.calcPoints(
-        section(
-          this.destinations,
-          startPointIdx,
-          // 이전의 점을 1개 포함하여, 이전 이동 맥락을 파악
-          [1, this.minPoint - 1]
-        ).map((v) => v.value),
+        destsForCalc,
         // 이전의 점을 1개 포함했기 대문에 minPoint보다 1개 더 추가
         this.maxFrameCountToNextPoint * (this.minPoint - 1 + 1) + 1
-      ).reduce<Point[]>((prev, cur) => {
-        const newPoints = [...prev]
+      )
+        .reduce<Point[]>((prev, cur) => {
+          const newPoints = [...prev]
 
-        if (newPoints.length > 0) {
-          newPoints.push(cur)
+          if (newPoints.length > 0) {
+            newPoints.push(cur)
+
+            return newPoints
+          }
+
+          if (
+            similarValue(cur.x, this.destinations[startPointIdx].value.x) &&
+            similarValue(cur.y, this.destinations[startPointIdx].value.y)
+          ) {
+            newPoints.push(cur)
+          }
 
           return newPoints
-        }
-
-        if (
-          similarValue(cur.x, this.destinations[startPointIdx].value.x) &&
-          similarValue(cur.y, this.destinations[startPointIdx].value.y)
-        ) {
-          newPoints.push(cur)
-        }
-
-        return newPoints
-      }, [])
+        }, [])
+        // 시작점 제외
+        .slice(1)
 
       // 계산 완료 상태로 변경
       ;[...new Array(this.minPoint - 1)].forEach((_, idx) => {
@@ -224,19 +248,19 @@ export default class GameInterpolation {
       this.points.push(...points)
       this.destinations = this.destinations.slice(startPointIdx - 1)
 
+      console.log(
+        this.destinations.map((d) => ({ ...d })),
+        destsForCalc,
+        this.destinations[startPointIdx],
+        this.calcPoints(
+          destsForCalc,
+          // 이전의 점을 1개 포함했기 대문에 minPoint보다 1개 더 추가
+          this.maxFrameCountToNextPoint * (this.minPoint - 1 + 1) + 1
+        )
+      )
+
       return this.points.shift()
     })()
-
-    if (
-      this.lastPoint &&
-      returnValue &&
-      this.lastPoint.x === returnValue.x &&
-      this.lastPoint.y === returnValue.y
-    ) {
-      return
-    }
-
-    this.lastPoint = returnValue
 
     return returnValue
   }

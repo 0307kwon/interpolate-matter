@@ -1,10 +1,14 @@
 type Callback<M> = (message: M) => void
 
 const Communicator = <M extends unknown>() => {
-  const callbacks: Callback<M>[] = []
+  let callbacks: Callback<M>[] = []
 
   const receive = (callback: Callback<M>) => {
     callbacks.push(callback)
+  }
+
+  const resetReceiver = () => {
+    callbacks = []
   }
 
   const send = (message: M) => {
@@ -13,7 +17,8 @@ const Communicator = <M extends unknown>() => {
 
   return {
     send,
-    receive
+    receive,
+    resetReceiver
   }
 }
 export default Communicator

@@ -1,16 +1,31 @@
 import { atom } from 'recoil'
 
+interface SimulatorState {
+  latency: number
+  transferInterval: number
+  minPoint: number
+  maxFrameCountToNextPoint: number
+}
+
+const simulatorState: SimulatorState = {
+  latency: 0,
+  transferInterval: 17,
+  minPoint: 2,
+  maxFrameCountToNextPoint: 1,
+  ...JSON.parse(localStorage.getItem('simulatorState') || '{}')
+}
+
 export const latencyState = atom({
   key: 'latency',
   default: {
-    value: 0
+    value: simulatorState.latency
   }
 })
 
 export const transferIntervalState = atom({
   key: 'transferInterval',
   default: {
-    value: 17,
+    value: simulatorState.transferInterval,
     sendingCount: 0
   }
 })
@@ -18,13 +33,13 @@ export const transferIntervalState = atom({
 export const minPointState = atom({
   key: 'minPoint',
   default: {
-    value: 2
+    value: simulatorState.minPoint
   }
 })
 
 export const maxFrameCountToNextPointState = atom({
   key: 'maxFrameCountToNextPoint',
   default: {
-    value: 1
+    value: simulatorState.maxFrameCountToNextPoint
   }
 })

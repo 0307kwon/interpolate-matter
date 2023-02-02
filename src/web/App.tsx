@@ -11,7 +11,15 @@ import WallBody from '@/web/component/WallBody'
 import { RESOLUTION } from '@/web/config'
 import Communicator from '@/web/Model/Communicator'
 import MyGameFactory from '@/web/Model/MyGameFactory'
+import {
+  latencyState,
+  maxFrameCountToNextPointState,
+  minPointState,
+  transferIntervalState
+} from '@/web/recoil/atom'
 import { Engine } from 'matter-js'
+import { useEffect, useRef } from 'react'
+import { useRecoilValue } from 'recoil'
 import classes from './App.module.less'
 
 interface SyncUpMsg {
@@ -35,6 +43,34 @@ const gameMatterStore2 = new GameStore({
 })
 
 const App = () => {
+  const bodies = useRef({
+    controlledBody: MyGameFactory.createMyCharacterBody('1'),
+    synchronizedBody: MyGameFactory.createSynchronizedBody('1')
+  })
+  const latency = useRecoilValue(latencyState)
+  const transferInterval = useRecoilValue(transferIntervalState)
+  const minPoint = useRecoilValue(minPointState)
+  const maxFrameCountToNextPoint = useRecoilValue(maxFrameCountToNextPointState)
+
+  useEffect(() => {
+    const unloadEventCallback = () => {
+      const simulatorState = {
+        latency: latency.value,
+        transferInterval: transferInterval.value,
+        minPoint: minPoint.value,
+        maxFrameCountToNextPoint: maxFrameCountToNextPoint.value
+      }
+
+      localStorage.setItem('simulatorState', JSON.stringify(simulatorState))
+    }
+
+    window.addEventListener('beforeunload', unloadEventCallback)
+
+    return () => {
+      window.removeEventListener('beforeunload', unloadEventCallback)
+    }
+  }, [latency, transferInterval, minPoint, maxFrameCountToNextPoint])
+
   return (
     <div className={classes.root}>
       <div className={classes.header}>
@@ -51,9 +87,7 @@ const App = () => {
               resolution: RESOLUTION
             }}
           >
-            <MyCharacterBody
-              gameBody={MyGameFactory.createMyCharacterBody('1')}
-            />
+            <MyCharacterBody gameBody={bodies.current.controlledBody} />
             <OtherCharacterBody gameBody={MyGameFactory.createOtherBody('2')} />
             <WallBody
               gameBody={MyGameFactory.createWall({
@@ -96,7 +130,7 @@ const App = () => {
             }}
           >
             <SynchronizedCharacterBody
-              gameBody={MyGameFactory.createSynchronizedBody('1')}
+              gameBody={bodies.current.synchronizedBody}
             />
             <WallBody
               gameBody={MyGameFactory.createWall({

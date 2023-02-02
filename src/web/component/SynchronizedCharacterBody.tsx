@@ -12,12 +12,13 @@ import {
   minPointState
 } from '@/web/recoil/atom'
 import { Body } from 'matter-js'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 
 export const SynchronizedCharacterBody = withGameLogic(
   CharacterBodyShape,
-  ({ gameBody }) => {
+  (props) => {
+    const [gameBody] = useState(props.gameBody)
     const { addGameEvents } = useGameEvent()
     const { getOffsettingGravityEvent } = useGameBodyEvent(gameBody)
     const { gamePainter } = useGameMatterContext()
@@ -79,8 +80,11 @@ export const SynchronizedCharacterBody = withGameLogic(
           name: 'afterUpdate',
           event: syncGameBody
         },
-        getOffsettingGravityEvent()
+        getOffsettingGravityEvent(),
+        () => () => {
+          communicator.resetReceiver()
+        }
       )
-    }, [minPoint.value, maxFrameCountToNextPoint.value])
+    }, [minPoint, maxFrameCountToNextPoint, latency])
   }
 )
